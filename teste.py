@@ -7,7 +7,6 @@ largura = 445
 altura = 400
 ponto = 0
 pause = False
-vidas = 3
 
 
 
@@ -21,17 +20,17 @@ class Disparo(pygame.sprite.Sprite):
         self.rect.y = jogador.rect.y - self.rect.height
 
 
-def printfps(tela,relogio,ponto,vidas):
-    font = pygame.font.SysFont('comicsansms', 10)
+def printfps(tela,relogio,score,vidas):
+    font = pygame.font.SysFont('comicsansms', 30)
     text = font.render('FPS: '+str(int(relogio.get_fps())), True, (255, 0, 0))
-    score = font.render('score: '+str(ponto),True,(255,0,0))
+    score = font.render('score: '+str(score),True,(255,0,0))
     vida = font.render('Vidas: '+str(vidas),True,(255,0,0))
     tela.blit(text,(0,10))
     tela.blit(score,(100,10))
-    tela.blit(vida,(200,10))
+    tela.blit(vida,(300,10))
 
 
-def tirojogador(jogador):
+def tirojogador(jogador,vidas):
     laser = pygame.mixer.Sound('sons/laser.ogg')
     global pause
     while vidas > 0:
@@ -46,9 +45,9 @@ def tirojogador(jogador):
 
 def IniciaJogo():
     global vidas, ponto
-    logica = logicajogo.Logica(largura,altura,ponto,vidas,pause)
+    logica = logicajogo.Logica(largura,altura,ponto,pause)
     jogador = nave.NaveEspacial(largura,altura)
-    t = threading.Thread(target=tirojogador, args=(jogador,))
+    t = threading.Thread(target=tirojogador, args=(jogador,logica.vidas))
     pygame.init()
     pygame.mixer.music.load('sons/musica_fundo.ogg')
     pygame.mixer.music.set_volume(.5)
@@ -60,10 +59,10 @@ def IniciaJogo():
     t.start()
 
     while True:
-        relogio.tick(30)
+        relogio.tick(70)
         for evento in pygame.event.get():
             if evento.type == QUIT:
-                vidas=0
+                logica.vidas=0
                 pygame.quit()
                 sys.exit()
             if evento.type == pygame.KEYDOWN:
@@ -86,7 +85,7 @@ def IniciaJogo():
         jogador.colocar(tela)
         jogador.mostrarDisparo(tela)
         logica.logicaInimigos(tela,jogador.listaDisparo)
-        printfps(tela,relogio,ponto,vidas)
+        printfps(tela,relogio,logica.score,logica.vidas)
         pygame.display.update()
 
 

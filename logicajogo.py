@@ -1,10 +1,10 @@
-import nave,pygame,random
+import nave,pygame,random, sys
 from pygame.locals import *
 class Logica(nave.NaveEspacial):
-    def __init__(self,largura,altura,ponto,vidas,pause):
+    def __init__(self,largura,altura,score,pause):
         self.pause = pause
-        self.vidas = vidas
-        self.ponto = ponto
+        self.vidas = 3
+        self.score = score
         self.largura = largura
         self.altura = altura
         self.listaAsteroides = []
@@ -21,7 +21,7 @@ class Logica(nave.NaveEspacial):
         for i in self.listaAsteroides:
             for j in listadisparo:
                 if i.rect.colliderect(j):
-                    self.ponto = self.ponto + 10
+                    self.score = self.score + 10
                     try:
                         self.listaAsteroides.remove(i)
                     except ValueError:
@@ -62,6 +62,6 @@ class Logica(nave.NaveEspacial):
                                 self.pause = False
                 self.listaAsteroides.clear()
                 self.listaDisparo.clear()
-                if self.vidas == 0:
+                if self.vidas == 0:           
                     pygame.quit()
                     sys.exit()

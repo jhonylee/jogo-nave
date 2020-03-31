@@ -8,7 +8,6 @@ class NaveEspacial(pygame.sprite.Sprite):
         self.rect.centery = altura - self.rect.height/2
 
         self.listaDisparo=[]
-        self.vida=True
         self.velocidade =20
 
     def disparar(self,disparo):
