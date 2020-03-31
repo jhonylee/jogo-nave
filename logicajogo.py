@@ -1,7 +1,11 @@
 import nave,pygame,random, sys
 from pygame.locals import *
+
+#Classe responsável pela lógica do jogo
 class Logica(nave.NaveEspacial):
+
     def __init__(self,largura,altura,score,pause):
+
         self.pause = pause
         self.vidas = 3
         self.score = score
@@ -9,12 +13,14 @@ class Logica(nave.NaveEspacial):
         self.altura = altura
         self.listaAsteroides = []
         self.listaDisparo=[]
+ #adiciona na estrutura de dados       
     def adicionaInimigo(self):
         self.listaAsteroides.append(nave.NaveEspacial(self.largura,self.altura))
         self.listaAsteroides[-1].ImagemNave = pygame.image.load('imagens/asteroide.png')
         self.listaAsteroides[-1].rect.centerx = random.randint(0, self.largura)
         self.listaAsteroides[-1].rect.centery=-30
-
+#blita asteroid, verifica se o tiro colidiu e remove, coloca texto na tela, verifica vida, pausa
+#futura refatoraçao completa do código
     def logicaInimigos(self,tela,listadisparo):
         for i in self.listaAsteroides:
             tela.blit(i.ImagemNave, i.rect)
